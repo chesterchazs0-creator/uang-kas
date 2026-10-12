@@ -1,11 +1,11 @@
 :root {
-    --red-gradient: linear-gradient(135deg, #b418bf 0%, #800511 100%);
-    --bg-dark-paskibra: #11141A;    
-    --card-bg: rgb(229, 151, 164);             
+    --red-gradient: rgb(14, 14, 14);
+    --bg-dark-paskibra: #f3f6fa;    
+    --card-bg:rgb(57, 103, 103);             
     --gold-premium: #fdfdfd;       
-    --text-white: #0a0900;
-    --text-gray: #020202;
-    --green-neon: #10B981;
+    --text-white: #f5f4ef;
+    --text-gray: #ffffff;
+    --green-neon: #0be00f;
     --red-neon: #EF4444;
     --border-color: rgba(246, 253, 255, 0.964);
     --border-radius-premium: 16px;

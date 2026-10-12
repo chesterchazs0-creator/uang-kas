@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRefresh = document.getElementById('btnRefresh');
     const searchInput = document.getElementById('searchName');
     
+    // Otomatis setel input kalender ke tanggal hari ini saat halaman dibuka
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('tanggal').value = today;
+
     fetchCashData();
 
     searchInput.addEventListener('input', (e) => {
@@ -28,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const payload = {
             action: 'add',
+            tanggal: document.getElementById('tanggal').value,
             nama: document.getElementById('nama').value,
             kelas: document.getElementById('kelas').value,
             jenis: document.getElementById('jenis').value,
@@ -46,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === 'success') {
                 showStatus('Transaksi finansial berhasil dicatat!', 'success');
                 form.reset();
+                document.getElementById('tanggal').value = today; // setel ulang ke hari ini
                 fetchCashData();
             }
         })
@@ -105,13 +111,23 @@ function renderTableRows(dataToRender) {
             const tandaNominal = isMasuk ? '+ Rp ' : '- Rp ';
             const warnaNominal = isMasuk ? 'var(--green-neon)' : 'var(--text-white)';
 
+            // Format tanggal agar ramah dibaca (Contoh: 12 Okt 2026)
+            let tanggalFormat = '-';
+            if (row.tanggal) {
+                const t = new Date(row.tanggal);
+                if (!isNaN(t)) {
+                    tanggalFormat = t.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                }
+            }
+
             tr.innerHTML = `
                 <td>
                     <span style="font-weight:700; letter-spacing:0.3px;">${row.nama}</span>
                     <br><small style="color:var(--text-gray); font-size:11px;">${row.keterangan || '-'} • Kelas ${row.kelas || '-'}</small>
                 </td>
                 <td style="text-align: center; vertical-align: middle;">
-                    <span class="badge-premium ${badgeClass}">${row.jenis}</span>
+                    <span class="badge-premium ${badgeClass}">${row.jenis}</span><br>
+                    <small style="color:var(--text-gray); font-size:10px;">${tanggalFormat}</small>
                 </td>
                 <td style="text-align: right; font-weight: 700; color: ${warnaNominal}; vertical-align: middle;">
                     ${tandaNominal}${jml.toLocaleString('id-ID')}
